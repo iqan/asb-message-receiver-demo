@@ -13,9 +13,9 @@
         private SubscriptionClient subscriptionClient;
         private bool messageReceived = false;
         private T received;
-        private readonly string subscriptionName = "asos.legacy.retail.pricing.endpoint";
-        private readonly string topicName = "pricechanges.iqan";
-        private readonly string connectionString = "Endpoint=sb://asos29-test-eun-legacyretail-bus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=V98cZQMfkhwlqwN9KtqbhMFEAqDwEqMtxK3ZYfi8YBs=";
+        private readonly string subscriptionName = "your-subscription-name";
+        private readonly string topicName = "your-topic-name";
+        private readonly string connectionString = "your-service-bus-connection-string";
         private readonly int maxMinutes;
         private event EventHandler<bool> messageReceivedEvent;
 
