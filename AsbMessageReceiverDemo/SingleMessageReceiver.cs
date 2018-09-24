@@ -17,23 +17,23 @@
         private readonly string topicName = "your-topic-name";
         private readonly string connectionString = "your-service-bus-connection-string";
         private readonly int maxMinutes;
-        private event EventHandler<bool> messageReceivedEvent;
+        private event EventHandler<bool> MessageReceivedEvent;
 
         public SingleMessageReceiver(int maxMinutes = 1)
         {
             this.maxMinutes = maxMinutes;
             Console.WriteLine("Creating subscription client.");
-            this.subscriptionClient = new SubscriptionClient(connectionString, topicName, subscriptionName);
+            this.subscriptionClient = new SubscriptionClient(this.connectionString, this.topicName, this.subscriptionName);
 
             Console.WriteLine("Listening to message received event.");
-            this.messageReceivedEvent += Receiver_messageReceivedEvent;
+            this.MessageReceivedEvent += Receiver_messageReceivedEvent;
         }
 
         public T ReceiveMessage()
         {
             Console.WriteLine("Registering message handler.");
             this.subscriptionClient.RegisterMessageHandler(MessageHandler, new MessageHandlerOptions(ErrorHandler) { AutoComplete = false, MaxConcurrentCalls = 1 });
-            WaitTillMessageIsReceived();
+            this.WaitTillMessageIsReceived();
             return received;
         }
 
@@ -44,7 +44,7 @@
                 Console.WriteLine("Message received");
                 var content = Encoding.UTF8.GetString(message.Body);
                 this.received = JsonConvert.DeserializeObject<T>(content);
-                this.messageReceivedEvent?.Invoke(this, true);
+                this.MessageReceivedEvent?.Invoke(this, true);
                 await this.subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
             }
         }
